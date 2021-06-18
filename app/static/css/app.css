@@ -1,0 +1,45 @@
+/**** element styles ****/
+hr { border-color: #cccccc; margin: 0px; }
+
+
+/**** class-based style modifiers ****/
+
+.no-margins { margin: 0px; }
+
+.with-margins { margin: 10px; }
+
+.col-centered { float: none; margin: 0 auto; }
+
+.footer {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding-bottom: 60 px;
+}
+
+.image_block {
+    padding-left: 0px;
+    padding-bottom: 10px;"
+}
+
+.btn-link{
+  border:none;
+  outline:none;
+  background:none;
+  cursor:pointer;
+  padding:0;
+  color:#000000;
+  text-decoration:underline;
+  font-family:inherit;
+  font-size:inherit;
+}
+
+.padding-bottom {
+    padding-bottom: 20px;
+}
+
+.no-margin-top-bottom {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}

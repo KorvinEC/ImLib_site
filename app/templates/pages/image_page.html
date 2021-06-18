@@ -1,0 +1,166 @@
+{% extends "common/page_base.html" %}  {# common/page_base.html extends layout.html #}
+
+{% block content %}
+<div class="row">
+	<div class="col-xs-12 col-md-3">
+        <div class="well well-sm text-center">
+            <h5 class="text-center">Tags:</h5>
+        </div>
+        <div class='panel panel-default'>
+            <div class="panel-body">
+            {% if tags %}
+                  {% for tag in tags %}
+                        <div class="btn-group">
+                            <a class='btn btn-default' href="{{ url_for('user_gallery', tags=tag.tag, library_name='Gallery') }}">{{ tag.tag }}</a>
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                <span class="caret"></span>
+                            </button>                                
+                            <ul class="dropdown-menu" role="menu">
+                                <li class='text-center'>
+                                    <a href='#' data-toggle="modal" data-target="#name_change_modal{{ tag.id }}">
+                                        Change <i class="glyphicon glyphicon-pencil"></i>
+                                    </a>
+                                </li>
+                                <li class='text-center'>
+                                    <a href='{{ url_for("delete_tag", tag_id=tag.id, image_id=image.id) }}'>
+                                        Delete <i class="glyphicon glyphicon-remove"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="name_change_modal{{ tag.id }}" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title text-center">Change tag</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="POST" enctype=multipart/form-data action=#>
+                                            <div class="input-group">
+                                                {{ tag_change_form.csrf_token }}
+                                                {{ tag_change_form.tag(class="form-control", value=tag.tag) }}
+                                                {{ tag_change_form.tag_id(type='hidden', value=tag.id) }}
+                                                <div class="input-group-btn">
+                                                    {{ tag_change_form.submit(class="btn btn-default") }}
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                  {% endfor %}
+                  
+            {% else %}
+                <h5 class='well well-sm text-center no-margin-top-bottom' >No tags</h5>
+            {% endif %}
+            </div>
+        </div>
+        <div class="padding-bottom">
+            <form method="POST" enctype=multipart/form-data action=''>
+                <div class="input-group">
+                    {{ form.csrf_token }}
+                    {{ form.tag(class="form-control", placeholder='Add tag') }}
+                    <div class="input-group-btn">
+                        <button type='submit' class="btn btn-default" name="submit" value="Add_tag">
+                            <i class="glyphicon glyphicon-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="padding-bottom">
+            <div class="btn-group btn-group-justified">
+                <a class="btn btn-default" href='{{ url_for("delete_image", image_id=image.id) }}'>
+                    <i class="glyphicon glyphicon-remove"></i>   
+                </a>
+                <a class="btn btn-default" href='#' data-toggle="modal" data-target="#name_change_modal">
+                    <i class="glyphicon glyphicon-pencil"></i>
+                </a>
+                <a class="btn btn-default" href='{{ url_for("send_image", filename=image.id) }}'>
+                    <i class="glyphicon glyphicon-share-alt"></i>
+                </a>
+            </div>
+            {% if libraries %}
+                <div class="dropdown">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-block" id="menu1" data-toggle="dropdown">
+                        Add to library <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                        {% for library in libraries %}
+                            <li class='text-center'>
+                                <a href="{{ url_for('add_image_to_lib', image_id=image.id, library_id=library.id) }}" role="menuitem" tabindex="-1">
+                                    {{ library.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            {% if delete_from_libs %}
+                <div class="dropdown">
+                    <button type="button" class="btn btn-default dropdown-toggle btn-block" id="menu2" data-toggle="dropdown">
+                        Delete from library <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu2">
+                        {% for delete_from_lib in delete_from_libs %}
+                            <li class='text-center'>
+                                <a href="{{ url_for('delete_image_from_lib', image_id=image.id, library_id=delete_from_lib.id) }}"  role="menuitem" tabindex="-1">
+                                    {{ delete_from_lib.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+	</div>
+	<div class="col-xs-12 col-md-9">
+        <div class='well well-sm text-center'>
+            <h5>{{ image_name }}</h5>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body text-center">
+                <img src="{{ url_for('send_image', filename=image.id) }}" class="img-responsive center-block" >
+            </div>
+        </div>
+	</div>
+</div>
+<div id="name_change_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title text-center">Change name</h4>
+            </div>
+            <div class="modal-body">
+                <form method="POST" enctype=multipart/form-data action=''>
+                    <div class="input-group">
+                        {{ name_change_form.csrf_token }}
+                        {{ name_change_form.name(class="form-control", value=image_name) }}
+                        <div class="input-group-btn">
+                            {{ name_change_form.submit(class="btn btn-default") }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function(){
+  $('.dropdown a.test').on("click", function(e){
+    $(this).next('ul').toggle();
+    e.stopPropagation();
+    e.preventDefault();
+  });
+});
+</script>
+{% endblock %} 
