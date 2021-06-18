@@ -55,10 +55,10 @@ SQLALCHEMY_DATABASE_URI = 'mysql://root:1234@localhost/imagelibrary'
 # Flask-Mail settings
 # For smtp.gmail.com to work, you MUST set "Allow less secure apps" to ON in Google Accounts.
 # Change it in https://myaccount.google.com/security#connectedapps (near the bottom).
-MAIL_SERVER = 'smtp.gmail.com'
-MAIL_PORT = 587
+MAIL_SERVER = '#'
+MAIL_PORT = #
 MAIL_USE_SSL = False
 MAIL_USE_TLS = True
-MAIL_USERNAME = 'maksheev77715@gmail.com'
-MAIL_PASSWORD = 'qasder11'
-MAIL_DEFAULT_SENDER = '<maksheev77715@gmail.com>'
+MAIL_USERNAME = '#'
+MAIL_PASSWORD = '#'
+MAIL_DEFAULT_SENDER = '<#>'
